@@ -1,0 +1,50 @@
+version: "3.8"
+services:  
+  tensorflow: 
+    image: tensorflow_base_env:latest
+    container_name: tensorflow
+    stdin_open: true
+    tty: true
+    volumes:
+      - type: volume
+        source: src
+        target: /tf
+        volume:
+          nocopy: false
+    ports: 
+      - '8888:8888'
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+volumes:
+  src: 
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: './src'
+
+
+          
+#     ports: 
+#       - '8888:8888'
+#     volumes:
+#       - type: volume
+#         source: src
+#         target: /tf/notebooks
+#         volume:
+#           nocopy: false
+
+# volumes:
+#   src: 
+#     driver: local
+#     driver_opts:
+#       type: 'none'
+#       o: 'bind'
+#       device: './src'
+    
+#tf.config.list_logical_devices()
